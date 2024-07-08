@@ -151,8 +151,29 @@
 
                 this.cursors = this.input.keyboard.createCursorKeys();
 
-                this.leftButton.on('pointerdown', () => this.movePlayer(-1));
-                this.rightButton.on('pointerdown', () => this.movePlayer(1));
+                this.isLeftDown = false;
+                this.isRightDown = false;
+
+                this.leftButton.on('pointerdown', () => {
+                    this.isLeftDown = true;
+                });
+                this.rightButton.on('pointerdown', () => {
+                    this.isRightDown = true;
+                });
+
+                this.leftButton.on('pointerup', () => {
+                    this.isLeftDown = false;
+                });
+                this.rightButton.on('pointerup', () => {
+                    this.isRightDown = false;
+                });
+
+                this.leftButton.on('pointerout', () => {
+                    this.isLeftDown = false;
+                });
+                this.rightButton.on('pointerout', () => {
+                    this.isRightDown = false;
+                });                
 
                 this.goodLogos = [...this.goodLogoNames];
                 this.badLogos = [...this.badLogoNames];
@@ -194,9 +215,9 @@
             update() {
                 if (this.gameOver) return;
 
-                if (this.cursors.left.isDown) {
+                if (this.cursors.left.isDown || this.isLeftDown) {
                     this.player.setVelocityX(-160);
-                } else if (this.cursors.right.isDown) {
+                } else if (this.cursors.right.isDown || this.isRightDown) {
                     this.player.setVelocityX(160);
                 } else {
                     this.player.setVelocityX(0);
@@ -209,9 +230,11 @@
                 });
             }
 
-            movePlayer(direction) {
-                this.player.setVelocityX(direction * 160);
-            }
+            // movePlayer(direction) {
+            //     if (direction < )
+
+            //     this.player.setVelocityX(direction * 160);
+            // }
 
             updateTimer() {
                 if (this.gameOver) return;
