@@ -102,6 +102,12 @@
                         });
                 };
 
+                video.onclick = () => {
+                    video.style.display = 'none';
+                    video.pause();
+                    this.scene.start('GameScene');
+                };
+
                 video.onended = () => {
                     video.style.display = 'none';
                     this.scene.start('GameScene');
@@ -177,6 +183,9 @@
             create() {
 
                 this.highScore = localStorage.getItem('fy25ko-hs') ?? 0;
+                if (btoa(this.highScore + window.location) !== localStorage.getItem('fy25ko-hsc')) {
+                    this.highScore = 0;
+                }
 
                 WebFont.load({
                     google: {
@@ -393,6 +402,7 @@
                 if (this.score > this.highScore) {
                     this.highScore = this.score;
                     localStorage.setItem('fy25ko-hs', this.highScore);
+                    localStorage.setItem('fy25ko-hsc', btoa(this.highScore + window.location));
                     this.highScoreText.setText(`High Score: ${this.highScore}`);
                 }
 
