@@ -52,6 +52,7 @@
                     'logos/gmail.png',
                     'logos/jira.png',
                     'logos/ms-outlook.png',
+                    'logos/ms-sharepoint.png',
                     'logos/ms-teams.png',
                     'logos/salesforce.png',
                     'logos/slack.png',
@@ -67,6 +68,11 @@
                     'logos/sap.png',
                     'logos/thunderbird.png',
                     'logos/ms-powerbi.png',
+                    'logos/hibob.png',
+                    'logos/infor.png',
+                    'logos/appsense.png',
+                    'logos/avecto.png',
+                    'logos/beyondtrust.png',
                 ];
 
                 this.goodLogoNames = [];
@@ -92,6 +98,8 @@
 
             create() {
 
+                this.highScore = localStorage.getItem('fy25ko-hs') ?? 0;
+
                 WebFont.load({
                     google: {
                         families: ['Poppins']
@@ -101,8 +109,7 @@
 
                         this.countdownText = this.add.text((this.scale.width / 4) * 3, 50, 'Time: 10', { fontSize: '14px', fill: '#fff', fontFamily: 'Poppins', align: 'center' }).setOrigin(0.5);
                         this.scoreText = this.add.text(this.scale.width / 4, 50, 'Score: 0', { fontSize: '14px', fill: '#fff', fontFamily: 'Poppins', align: 'left' }).setOrigin(0.5);
-                        this.highScoreText = this.add.text(this.scale.width / 2, 12, 'Best: 0', { fontSize: '24px', fill: '#fff', fontFamily: 'Poppins', align: 'right' }).setOrigin(0.5);
-
+                        this.highScoreText = this.add.text(this.scale.width / 2, 12, `Best: ${this.highScore}`, { fontSize: '24px', fill: '#fff', fontFamily: 'Poppins', align: 'right' }).setOrigin(0.5);
 
                         // Start game on click
                         this.startText = this.add.text(this.scale.width / 2, 300, 'Click to start', { fontSize: '32px', fill: '#fff', fontFamily: 'Poppins', fontWeight: 'bold' }).setOrigin(0.5);
@@ -188,7 +195,6 @@
                 this.physics.add.overlap(this.player, this.blocks, this.hitBlock, null, this);
 
                 this.gameOver = true;
-                this.highScore = 0;
             }
 
             startGame() {
@@ -207,7 +213,6 @@
                 // Clear existing blocks
                 this.blocks.clear(true, true);
 
-                // Reset text displays
                 this.countdownText.setText(`Time: ${this.countdownTimer}`);
                 this.scoreText.setText(`Score: ${this.score}`);
             }
@@ -309,6 +314,7 @@
 
                 if (this.score > this.highScore) {
                     this.highScore = this.score;
+                    localStorage.setItem('fy25ko-hs', this.highScore);
                     this.highScoreText.setText('High Score: ' + this.highScore);
                 }
 
