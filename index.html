@@ -88,6 +88,15 @@
                 const startButton = document.getElementById('startButton');
                 const video = document.getElementById('introVideo');
 
+                const skipIntro = sessionStorage.getItem('fy25ko-skipintro');
+
+                if (skipIntro === 'true') {
+                    startButton.style.display = 'none';
+                    video.style.display = 'none';
+                    this.scene.start('GameScene');
+                    return
+                }
+
                 startButton.style.display = 'block';
                 startButton.onclick = () => {
                     startButton.style.display = 'none';
@@ -98,6 +107,7 @@
                         })
                         .catch((error) => {
                             console.error('Error playing video:', error);
+                            sessionStorage.setItem('fy25ko-skipintro', 'true');
                             this.scene.start('GameScene'); // Start game if video fails
                         });
                 };
@@ -105,11 +115,13 @@
                 video.onclick = () => {
                     video.style.display = 'none';
                     video.pause();
+                    sessionStorage.setItem('fy25ko-skipintro', 'true');
                     this.scene.start('GameScene');
                 };
 
                 video.onended = () => {
                     video.style.display = 'none';
+                    sessionStorage.setItem('fy25ko-skipintro', 'true');
                     this.scene.start('GameScene');
                 };
             }
@@ -157,6 +169,7 @@
                     'logos/appsense.png',
                     'logos/avecto.png',
                     'logos/beyondtrust.png',
+                    'logos/dropbox.png',
                 ];
 
                 this.goodLogoNames = [];
@@ -205,8 +218,8 @@
                 });
 
                 // Get the game's width and height
-                // const width = this.scale.width;
-                // const height = this.scale.height;
+                const width = this.scale.width;
+                const height = this.scale.height;
 
                 // // Add the SVG as an image
                 // const background = this.add.image(width / 2, height / 2, 'background');
@@ -232,8 +245,8 @@
                     blendMode: 'LIGHTEN'
                 });
 
-                this.leftButton = this.add.rectangle(50, 550, 80, 80, 0x0000ff, 0.2).setInteractive();
-                this.rightButton = this.add.rectangle(350, 550, 80, 80, 0x0000ff, 0.2).setInteractive();
+                this.leftButton = this.add.rectangle(0, 0, width/2, height, 0xff00ff, 0.05).setOrigin(0).setInteractive();
+                this.rightButton = this.add.rectangle(width/2, 0, width/2, height, 0xff00ff, 0.05).setOrigin(0).setInteractive();
 
                 this.player = this.physics.add.sprite(200, 550, 'player');
                 this.player.setCollideWorldBounds(true);
@@ -344,7 +357,7 @@
                 if (this.gameOver) return;
 
                 const x = Phaser.Math.Between(0, 400);
-                const isGoodBlock = Phaser.Math.RND.pick([true, false, false, false]);
+                const isGoodBlock = Phaser.Math.RND.pick([true, true, false, false, false]);
 
                 const logoKey = Phaser.Math.RND.pick(isGoodBlock ? this.goodLogos : this.badLogos);
                 const block = this.blocks.create(x, 0, logoKey);
