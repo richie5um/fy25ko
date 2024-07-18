@@ -31,7 +31,7 @@
             position: relative;
             width: 400px;
             /* Set this to your game width */
-            height: 600px;
+            height: 500px;
             /* Set this to your game height */
             /* margin: 0 auto; */
         }
@@ -330,7 +330,7 @@
                 }
 
                 this.blocks.children.entries.forEach((block) => {
-                    if (block.y > 600) {
+                    if (block.y > 500) {
                         block.destroy();
                     }
                 });
@@ -428,7 +428,7 @@
         const config = {
             type: Phaser.AUTO,
             width: 400,
-            height: 600,
+            height: 500,
             parent: 'phaser-game',
             transparent: true,
             physics: {
